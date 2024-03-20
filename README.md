@@ -122,3 +122,132 @@ int main() {
 
     return 0;
 }
+
+
+
+
+22
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+void displayHangman(int attempts) {
+    if (attempts == 6) {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+    else if (attempts == 5) {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  O   |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+    else if (attempts == 4) {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  O   |" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+    else if (attempts == 3) {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  O   |" << std::endl;
+        std::cout << " /|   |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+    else if (attempts == 2) {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  O   |" << std::endl;
+        std::cout << " /|\\  |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+    else if (attempts == 1) {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  O   |" << std::endl;
+        std::cout << " /|\\  |" << std::endl;
+        std::cout << " /    |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+    else {
+        std::cout << "  ____" << std::endl;
+        std::cout << "  |   |" << std::endl;
+        std::cout << "  O   |" << std::endl;
+        std::cout << " /|\\  |" << std::endl;
+        std::cout << " / \\  |" << std::endl;
+        std::cout << "      |" << std::endl;
+        std::cout << "__________" << std::endl;
+    }
+}
+
+bool isWordGuessed(const std::string& word, const std::vector<char>& guessedLetters) {
+    for (char letter : word) {
+        if (std::find(guessedLetters.begin(), guessedLetters.end(), letter) == guessedLetters.end()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    setlocale(LC_ALL, "");
+    std::string word = "Ава";
+    std::vector<char> guessedLetters;
+
+    int attempts = 6;
+
+    while (attempts > 0) {
+        displayHangman(attempts);
+
+        for (char letter : word) {
+            if (std::find(guessedLetters.begin(), guessedLetters.end(), letter) != guessedLetters.end()) {
+                std::cout << letter << " ";
+            }
+            else {
+                std::cout << "_ ";
+            }
+        }
+        std::cout << std::endl;
+
+        if (isWordGuessed(word, guessedLetters)) {
+            std::cout << "Вы угодали!." << std::endl;
+            break;
+        }
+
+        std::cout << "Угодай слово: ";
+        char guess;
+        std::cin >> guess;
+
+        guessedLetters.push_back(guess);
+
+        if (word.find(guess) == std::string::npos) {
+            attempts--;
+            std::cout << "Неправельная буква " << attempts << " жизни." << std::endl;
+        }
+    }
+
+    if (attempts == 0) {
+        displayHangman(attempts);
+        std::cout << "Вы проиграли, слово было: " << word << std::endl;
+    }
+
+    return 0;
+}
